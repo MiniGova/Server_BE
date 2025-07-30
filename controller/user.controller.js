@@ -27,7 +27,9 @@ const updateData=async(req,res)=>{
     const index=database.findIndex((ele)=>{
       return ele.id===Number(id)
     })
-   
+   if(index===-1){
+    return res.status(404).sent({message:"User ID not found"})
+   }
     database.splice(index,1,updataData)
      res.status(200).send({message:"Data updata",result:database})
   }
@@ -43,6 +45,9 @@ const deleteData=async(req,res)=>{
     const index=database.findIndex((ele)=>{
       return ele.id===Number(id)
     })
+    if(index===-1){
+    return res.status(404).sent({message:"User ID not found"})
+   }
    
     database.splice(index,1)
      res.status(200).send({message:"Data delete",result:database})
@@ -69,7 +74,9 @@ const getDataById=async(req,res)=>{
     try{
         const {id}=req.params;
         
-        
+        if(!id || isNaN(id)){
+          return res.status(400).send({message :"User ID not found"})
+        }
         const exitingdata=database.find((ele)=>
             ele.id===Number(id)
     );
