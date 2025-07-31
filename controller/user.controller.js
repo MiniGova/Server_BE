@@ -83,7 +83,7 @@ const getDataById=async(req,res)=>{
         if(!exitingdata){
             return res.status(404).send({message:"Id could not found"})
         }
-        res.status(200).send({message:"Data Getted",result:database})
+        res.status(200).send({message:"Data Getted",result:exitingdata})
     }
    catch(err){
          res.status(500).send({message:"Data not Getted",result:err})
