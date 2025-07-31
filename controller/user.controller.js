@@ -11,7 +11,7 @@ const postUser=async(req,res)=>{
         return res.status(400).send({message:"the email already exists..."})
      }
      
-   const data=await database.push(newentry);
+    database.push(newentry);
    res.status(201).send({message:"Data Added...",result:database})
     }
     catch(err){
