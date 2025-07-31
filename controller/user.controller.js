@@ -20,42 +20,50 @@ const postUser=async(req,res)=>{
 
 }
 
-const updateData=async(req,res)=>{
-  try{
-    const {id}=req.params;
-    const updataData=req.body;
-    const index=database.findIndex((ele)=>{
-      return ele.id===Number(id)
-    })
-   if(index===-1){
-    return res.status(404).sent({message:"User ID not found"})
-   }
-    database.splice(index,1,updataData)
-     res.status(200).send({message:"Data updata",result:database})
-  }
-  catch(err){
-     res.status(200).send({message:"Data not updata",result:err})
-  }
-}
+const updateData = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const updatedData = req.body;
 
-const deleteData=async(req,res)=>{
-  try{
-    const {id}=req.params;
-    
-    const index=database.findIndex((ele)=>{
-      return ele.id===Number(id)
-    })
-    if(index===-1){
-    return res.status(404).sent({message:"User ID not found"})
-   }
-   
-    database.splice(index,1)
-     res.status(200).send({message:"Data delete",result:database})
+        const index = database.findIndex((ele) => ele.id === id);
+
+        if (index === -1) {
+            return res.status(404).send({ message: "User ID not found" });
+        }
+
+        // Optional: Ensure the incoming object has matching ID
+        if (updatedData.id !== id) {
+            return res.status(400).send({ message: "ID in body must match ID in URL" });
+        }
+
+        // Replace the old entry with the new one
+        database.splice(index, 1, updatedData);
+
+        res.status(200).send({ message: "Data updated", result: database });
+
+    } catch (err) {
+        res.status(500).send({ message: "Data not updated...", result: err });
+    }
+};
+
+
+
+const deleteData = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const index = database.findIndex((ele) => ele.id === id);
+
+    if (index === -1) {
+      return res.status(404).send({ message: "User ID not found" });
+    }
+
+    database.splice(index, 1);
+    res.status(200).send({ message: "Data deleted", result: database });
+  } catch (err) {
+    res.status(500).send({ message: "Data not deleted", result: err });
   }
-  catch(err){
-     res.status(200).send({message:"Data not delete",result:err})
-  }
-}
+};
+
 
 const getData=async(req, res) => {
     try {
